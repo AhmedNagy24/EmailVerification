@@ -1,4 +1,5 @@
 using System.Collections;
+using EmailVerifier.Models;
 
 namespace EmailVerifier.ReaderWriter;
 
@@ -12,8 +13,8 @@ public class ReadWriteManager
         return Reader?.Read(path);
     }
 
-    public bool Write(ArrayList data, string path)
+    public bool Write(List<Pair<string, string>> invalid, string path)
     {
-        return Writer != null && Writer.Write(data, path);
+        return Writer != null && Writer.Write(invalid, path);
     }
 }

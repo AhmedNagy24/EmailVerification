@@ -30,10 +30,10 @@ public class VerifierSystem
             if (data == null) continue;
             try
             {
-                List<Pair<string, string>> toBeRemoved;
+                var toBeRemoved = new List<Pair<string, string>>();
                 if (formatCheck)
                 {
-                    toBeRemoved = verifyManager.Verify(data, sender, data.Count);
+                    toBeRemoved.AddRange(verifyManager.Verify(data, sender, data.Count));
                     data = UpdateContacts(data, toBeRemoved);
                     (sender as BackgroundWorker)?.ReportProgress(0);
                     count += toBeRemoved.Count;
@@ -42,15 +42,14 @@ public class VerifierSystem
                 if (dnsCheck)
                 {
                     verifyManager.Validator = new DnsValidator();
-                    toBeRemoved = verifyManager.Verify(data, sender, data.Count);
-                    data = UpdateContacts(data, toBeRemoved);
+                    toBeRemoved.AddRange(verifyManager.Verify(data, sender, data.Count));
                     (sender as BackgroundWorker)?.ReportProgress(0);
                     count += toBeRemoved.Count;
                 }
 
                 if ((sender as BackgroundWorker)?.CancellationPending == true) throw new UserCancelException();
                 readWrite.Writer = new CsvWriter();
-                readWrite.Write(data, file);
+                readWrite.Write(toBeRemoved, file+"_invalid.csv");
             }
             catch (UserCancelException)
             {

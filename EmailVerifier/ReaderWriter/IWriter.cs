@@ -1,8 +1,8 @@
-using System.Collections;
+using EmailVerifier.Models;
 
 namespace EmailVerifier.ReaderWriter;
 
 public interface IWriter
 {
-    public bool Write(ArrayList data, string outputPath);
+    public bool Write(List<Pair<string, string>> invalid, string outputPath);
 }
